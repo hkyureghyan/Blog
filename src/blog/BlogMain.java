@@ -21,61 +21,84 @@ public class BlogMain {
         int command;
 
         while (isRun) {
-            printCommands();
-            command = Integer.parseInt(scanner.nextLine());
+            try {
+                printCommands();
+                command = Integer.parseInt(scanner.nextLine());
 
-            switch (command) {
-                case EXIT:
-                    isRun = false;
-                    break;
-                case ADD_POST:
-                    addPost();
-                    break;
-                case SEARCH_POST:
-                    searchPost();
-                    break;
-                case POSTS_BY_CATEGORY:
-                    postsByCategory();
-                    break;
-                case ALL_POSTS:
-                    allPosts();
-                    break;
-                default:
-                    System.out.println("Wrong command");
+                switch (command) {
+                    case EXIT:
+                        isRun = false;
+                        break;
+                    case ADD_POST:
+                        addPost();
+                        break;
+                    case SEARCH_POST:
+                        searchPost();
+                        break;
+                    case POSTS_BY_CATEGORY:
+                        postsByCategory();
+                        break;
+                    case ALL_POSTS:
+                        allPosts();
+                        break;
+                    default:
+                        System.out.println("Wrong command");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please input only numbers");
             }
+
+        }
+    }
+
+    private static void addPost() {
+
+        System.out.println("please input post data: title, text, category");
+        String[] postData = scanner.nextLine().split(",");
+        if (postData.length != 3) {
+            System.out.println("Please input correct format");
+            addPost();
+
+        } else {
+            Date createdDate = new Date();
+            Post post = new Post();
+            post.setTitle(postData[0]);
+            post.setText(postData[1]);
+            post.setCategory(postData[2]);
+            post.setCreatedDate(createdDate);
+            postStorage.add(post);
+            System.out.println("Post added");
         }
 
 
     }
 
-    private static void addPost() {
-        System.out.println("please input post data: title, text, category");
-        String[] postData = scanner.nextLine().split(",");
-        Date createdDate = new Date();
-        Post post = new Post();
-        post.setTitle(postData[0]);
-        post.setText(postData[1]);
-        post.setCategory(postData[2]);
-        post.setCreatedDate(createdDate);
-        postStorage.add(post);
-        System.out.println("Post added");
-
-    }
-
     private static void searchPost() {
-        System.out.println("Please input keyword which you want to search");
-        String keywordData = scanner.nextLine();
-        postStorage.searchPostsByKeyword(keywordData);
+       if (postStorage.isExist()){
+           System.out.println("Please input keyword which you want to search");
+           String keywordData = scanner.nextLine();
+           postStorage.searchPostsByKeyword(keywordData);
+       }else {
+           System.out.println("Nothing for search please input post at first");
+       }
 
     }
 
     private static void postsByCategory() {
-        String categoryData = scanner.nextLine();
-        postStorage.printPostsByCategory(categoryData);
+       if (postStorage.isExist()){
+            String categoryData = scanner.nextLine();
+            postStorage.printPostsByCategory(categoryData);
+        }else {
+           System.out.println("Nothing for search please input post at first");
+       }
     }
 
     private static void allPosts() {
-        postStorage.printAllPosts();
+        if (postStorage.isExist()){
+            postStorage.printAllPosts();
+        }else {
+            System.out.println("Nothing for print please input the post at first");
+        }
     }
 
 

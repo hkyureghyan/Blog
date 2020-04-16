@@ -30,11 +30,15 @@ public class PostStorageImpl implements PostStorage {
     }
 
     public void searchPostsByKeyword(String keyword) {
+
         for (int i = 0; i < size; i++) {
+
             if (posts[i].getTitle().contains(keyword) || posts[i].getText().contains(keyword)) {
                 System.out.println(posts[i]);
+
             }
         }
+       
     }
 
     public void printAllPosts() {
@@ -44,11 +48,22 @@ public class PostStorageImpl implements PostStorage {
     }
 
     public void printPostsByCategory(String category) {
+        boolean isFound = false;
         for (int i = 0; i < size; i++) {
-            if (posts[i].getCategory().equals(category)){
+            if (posts[i].getCategory().equals(category)) {
                 System.out.println(posts[i]);
+                isFound = true;
             }
+        }
+        if (!isFound) {
+            System.out.println("Nothing found");
         }
     }
 
+    public boolean isExist() {
+        if (size > 0) {
+            return true;
+        }
+        return false;
+    }
 }
