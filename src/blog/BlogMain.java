@@ -1,5 +1,6 @@
 package blog;
 
+import blog.exception.PostNotFoundException;
 import blog.storage.PostStorageImpl;
 import blog.model.Post;
 
@@ -12,11 +13,12 @@ public class BlogMain {
     private static final int SEARCH_POST = 3;
     private static final int POSTS_BY_CATEGORY = 4;
     private static final int ALL_POSTS = 5;
+    private static final int Get_BY_TITLE = 6;
     private static Scanner scanner = new Scanner(System.in);
     private static PostStorageImpl postStorage = new PostStorageImpl();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PostNotFoundException {
         boolean isRun = true;
         int command;
 
@@ -24,7 +26,9 @@ public class BlogMain {
             try {
                 printCommands();
                 command = Integer.parseInt(scanner.nextLine());
-
+            } catch (NumberFormatException e) {
+                command = -1;
+            }
                 switch (command) {
                     case EXIT:
                         isRun = false;
@@ -41,12 +45,13 @@ public class BlogMain {
                     case ALL_POSTS:
                         allPosts();
                         break;
+                    case Get_BY_TITLE:
+                        getByTitle();
+                        break;
                     default:
                         System.out.println("Wrong command");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Please input only numbers");
-            }
+
 
         }
     }
@@ -108,6 +113,12 @@ public class BlogMain {
         System.out.println("Please input " + SEARCH_POST + "  for search post");
         System.out.println("Please input " + POSTS_BY_CATEGORY + "  for search by category");
         System.out.println("Please input " + ALL_POSTS + "  for print all posts");
+        System.out.println("Please input " + Get_BY_TITLE + "  for get  post by title");
+    }
+    private static void getByTitle() throws PostNotFoundException {
+        System.out.println("Please input title for search");
+        String titleData = scanner.nextLine();
+        System.out.println(postStorage.getPostByTitle(titleData));
     }
 
 

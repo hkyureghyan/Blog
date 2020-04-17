@@ -1,5 +1,6 @@
 package blog.storage;
 
+import blog.exception.PostNotFoundException;
 import blog.model.Post;
 
 public class PostStorageImpl implements PostStorage {
@@ -20,13 +21,13 @@ public class PostStorageImpl implements PostStorage {
         posts = tmp;
     }
 
-    public Post getPostByTitle(String title) {
-        for (Post post : posts) {
-            if (post.getTitle().equals(title)) {
-                return post;
+    public Post getPostByTitle(String title) throws PostNotFoundException {
+        for (int i = 0; i < size; i++) {
+            if (posts[i].getTitle().equals(title)) {
+                return posts[i];
             }
         }
-        return null;
+        throw new PostNotFoundException("Post not found");
     }
 
     public void searchPostsByKeyword(String keyword) {
@@ -38,7 +39,7 @@ public class PostStorageImpl implements PostStorage {
 
             }
         }
-       
+
     }
 
     public void printAllPosts() {
